@@ -1,0 +1,146 @@
+<!-- Sub navBar -->
+<section id="sub navBar - cardView, listView, mapView, newCustomer">
+    <div class="container my-4">
+        <h4>
+            <fa-icon [icon]="farUser"></fa-icon> Customers
+        </h4>
+        <header>
+            <nav class="navbar navbar-expand-md bg-light my-3">
+                <div class="container-fluid">
+                    <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                        <li class="nav-item" routerLinkActive="active">
+                            <a class="nav-link" routerLink="/customers" aria-current="page" href="#">
+                                <fa-icon [icon]="faTableCellsLarge"></fa-icon>&nbsp;Card View
+                            </a>
+                        </li>
+                        <li class="nav-item" routerLinkActive="active">
+                            <a class="nav-link" routerLink="/customers-list" href="#">
+                                <fa-icon [icon]="faList"></fa-icon>&nbsp;List View
+                            </a>
+                        </li>
+
+                        <li class="nav-item">
+                            <a class="nav-link" (click)="openFormModal()">
+                                <fa-icon [icon]="faPlus"></fa-icon>&nbsp;New Customer
+                            </a>
+                        </li>
+                    </ul>
+                    <form class="d-flex" role="search">
+                        <div>
+                            <label class="form-label" for="filter">Filter:</label>
+                            <input type="text" class="form-control" [(ngModel)]="filterText" name="filterText" placeholder="by customer name">
+                        </div>
+                    </form>
+
+                </div>
+            </nav>
+        </header>
+    </div>
+</section>
+
+
+
+<!-- Customers -->
+<section id="Customers">
+    <div class="container my-4">
+        <main>
+            <div class="row">
+                <div class="col-lg-3"
+                    *ngFor="let user of users |  filterCustomers: filterText | paginate: { itemsPerPage: 6, currentPage: p, totalItems: total }; index as i">
+                    <div class="card mb-4">
+                        <div class="card-header container-fluid text-bg-dark">
+                            <div class="row">
+                                <div class="col-8">{{user.first_name}} {{user.last_name}}</div>
+                                <div class="col-4">
+                                    <fa-icon [icon]="faTrashCan" class="trashIcon" (click)="deleteUser(user)"></fa-icon>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col-3 img-fluid avatar">
+                                    <img class="none" src="{{user.avatar}}" alt="">
+                                </div>
+                                <div class="col-9">
+                                    <h6 class="card-title"><small>{{user.email}}</small></h6>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+            <div class="container"><button class="btn btn-dark btn-sm" (click)="deleteAllUsers()"
+                    [disabled]="users.length === 0">Delete all customers</button></div>
+
+        </main>
+    </div>
+</section>
+
+
+
+<!-- modal -->
+<section id="modal">
+    <div class="modal fade" id="editModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Add new customer</h5>
+                </div>
+
+                <form [formGroup]="userForm">
+                    <div class="modal-body row g-4">
+                        <div class="col-md-6">
+                            <label for="inputFirstName" class="form-label">First name<span
+                                    class="req-field">&nbsp;*</span></label>
+                            <input type="text" class="form-control" placeholder="Type in the first name"
+                                aria-label="First name" name="fullName" [(ngModel)]="userFirstName" name="userFirstName"
+                                formControlName="firstName">
+
+                        </div>
+
+                        <div class="col-md-6">
+                            <label for="inputLastName" class="form-label">Last name<span
+                                    class="req-field">&nbsp;*</span></label>
+                            <input type="text" class="form-control" placeholder="Type in the last name"
+                                aria-label="Last name" [(ngModel)]="userLastName" name="userLastName"
+                                formControlName="lastName">
+                        </div>
+
+                        <div class="col-md-12">
+                            <label for="inputEmail" class="form-label">E-mail<span
+                                    class="req-field">&nbsp;*</span></label>
+                            <input type="email" class="form-control" id="inputEmail" placeholder="Type in the email"
+                                [(ngModel)]="userEmail" name="userEmail" formControlName="email">
+                        </div>
+
+                    </div>
+
+                    <div id="modal-btn" class="modal-footer">
+
+                        <button id="btn-close" type="button" class="btn btn-light border" data-bs-dismiss="modal">
+                            Close
+                        </button>
+
+                        <button id="btn-save" type="button" class="btn btn-dark" (click)="createUser()"
+                            [disabled]="userFirstName === '' || userLastName === '' || userEmail === ''"
+                            data-bs-dismiss="modal">
+                            Save
+                        </button>
+
+                    </div>
+                </form>
+
+            </div>
+        </div>
+    </div>
+</section>
+
+
+
+<!-- pagination -->
+<div class="container my-5">
+    <pagination-controls class="my-pagination" (pageChange)="pageChangeEvent($event)"></pagination-controls>
+</div>
+

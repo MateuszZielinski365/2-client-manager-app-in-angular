@@ -1,0 +1,40 @@
+<!-- list of customers -->
+<button class="btn btn-dark btn-sm my-3 mx-3 btn-back-to-home-page" routerLink="/customers"> &lt;&lt; Back to home page
+    &nbsp;&nbsp; </button>
+
+<div class="container">
+    <table class="table  table-hover caption-top">
+        <caption class="fs-4 text-reset"><img src="" alt="" width="auto" height="24px">
+            List of customers
+        </caption>
+        <thead>
+            <tr class="text-white" style="background-color: #232c49;">
+                <td scope="col" colspan="2">Id</td>
+                <td scope="col">First name</td>
+                <td scope="col">Last name</td>
+                <td scope="col" colspan="2">E-mail</td>
+
+
+
+            </tr>
+        </thead>
+        <tbody class="align-middle "
+            *ngFor="let user of users | paginate: { itemsPerPage: 6, currentPage: p, totalItems: total };">
+            <tr>
+                <td scope="row" class="id">{{user.id}}</td>
+                <td><img class="avatar" src={{user.avatar}}></td>
+                <td>{{user.first_name}}</td>
+                <td>{{user.last_name}}</td>
+                <td>{{user.email}}</td>
+                <td colspan="1"></td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+
+
+
+<!-- pagination -->
+<div class="container my-5">
+    <pagination-controls class="my-pagination" (pageChange)="pageChangeEvent($event)"></pagination-controls>
+</div>
